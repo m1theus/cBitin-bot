@@ -32,18 +32,25 @@ const createTweetStream = (twitterUser, twitterClient, discordClient) => {
     (channel) => channel.name === 'cbitin-bot'
   );
 
-  twitterClient.stream('statuses/filter', { follow: twitterUser }, (stream) => {
-    stream.on('data', ({ id_str, user }) => {
-      if (twitterUsers == user.id_str) {
-        const tweetMessage = `https://twitter.com/${user.screen_name}/status/${id_str}`;
-        channel.send(tweetMessage);
-        sendMessageUser(discordClient, tweetMessage);
-      }
-    });
-    stream.on('error', (error) => {
-      console.log(`c=Twitter m=onError error=${error}`);
-    });
+  const stream = twitterClient.stream('statuses/filter', {
+    follow: twitterUser,
   });
+
+  stream.on('data', ({ id_str, user }) => {
+    if (twitterUser === user.id_str) {
+      const tweetMessage = `https://twitter.com/${user.screen_name}/status/${id_str}`;
+      channel.send(tweetMessage);
+      sendMessageUser(discordClient, tweetMessage);
+    }
+  });
+
+  stream.on('error', (error) => {
+    console.log(`c=Twitter m=onError error=${error}`);
+  });
+
+  console.log(
+    `m=createTweetStream twitterUser=${twitterUser} stream=${stream}`
+  );
 };
 
 const sendMessageUser = async (discordClient, message) => {
