@@ -1,9 +1,7 @@
 import express, { Router } from 'express';
 import cors from 'cors';
-import Bot from './src/main.js';
 
 const app = express();
-
 const routes = Router();
 
 routes.get('/', (_req, response) =>
@@ -27,5 +25,4 @@ app.use(routes);
 
 app.listen(process.env.PORT || 1337, () => {
   console.log('[app] started!');
-  new Bot().start();
 });
