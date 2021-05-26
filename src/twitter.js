@@ -1,3 +1,4 @@
+import path from 'path';
 import fs from 'fs';
 import Twitter from 'twitter';
 import {
@@ -8,10 +9,10 @@ import {
 } from './config.js';
 
 const discordUsers = JSON.parse(
-  fs.readFileSync('src\\data\\discord_users.json')
+  fs.readFileSync(path.join(__dirname, '/data/discord_users.json'))
 );
 const twitterUsers = JSON.parse(
-  fs.readFileSync('src\\data\\twitter_users.json')
+  fs.readFileSync(path.join(__dirname, '/data/twitter_users.json'))
 );
 
 export const start = (discordClient) => {
